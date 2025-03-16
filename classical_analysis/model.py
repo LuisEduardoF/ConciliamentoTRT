@@ -5,6 +5,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, classification_report
+import os
+import joblib
 
 import data_preprocessing as dp
 import target_encoder as te
@@ -63,9 +65,11 @@ def run_classification_on_split(X_train, X_test, y_train, y_test, random_state=4
     }
     
     results = {}
+    predictions = {}
     for name, clf in models.items():
         clf.fit(X_train, y_train)
         y_pred = clf.predict(X_test)
+        predictions[name] = y_pred
         
         # Print detailed classification report with zero_division parameter
         print(f"\nModel: {name}")
@@ -84,7 +88,29 @@ def run_classification_on_split(X_train, X_test, y_train, y_test, random_state=4
             'weighted_avg_f1': report['weighted avg']['f1-score']
         }
         
-    return results
+    return results, predictions
+
+def save_window_data(window_num, X_train, X_test, y_train, y_test, predictions, fitted_models):
+    """
+    Save window data and models to corresponding directories.
+    """
+    # Create window directory
+    window_dir = f'classical_analysis/results/window_{window_num}'
+    os.makedirs(window_dir, exist_ok=True)
+    
+    # Save data
+    X_train.to_csv(f'{window_dir}/X_train.csv', index=False)
+    X_test.to_csv(f'{window_dir}/X_test.csv', index=False)
+    y_train.to_csv(f'{window_dir}/y_train.csv', index=False)
+    y_test.to_csv(f'{window_dir}/y_test.csv', index=False)
+    
+    # Save predictions for each model
+    for model_name, y_pred in predictions.items():
+        np.save(f'{window_dir}/y_pred_{model_name}.npy', y_pred)
+    
+    # Save models
+    for model_name, model in fitted_models.items():
+        joblib.dump(model, f'{window_dir}/{model_name}.joblib')
 
 # -----------------------------
 # Example Usage in Main
@@ -131,7 +157,15 @@ if __name__ == '__main__':
         y_test = test_encoded[dp.TARGET_COL]
         
         print(f"Evaluating models for Window {i+1}:")
-        results = run_classification_on_split(X_train, X_test, y_train, y_test)
+        results, predictions = run_classification_on_split(X_train, X_test, y_train, y_test)
+        
+        # Save window data and fitted models
+        fitted_models = {
+            'LogisticRegression': LogisticRegression(random_state=42).fit(X_train, y_train),
+            'RandomForest': RandomForestClassifier(random_state=42).fit(X_train, y_train),
+            'GradientBoosting': GradientBoostingClassifier(random_state=42).fit(X_train, y_train)
+        }
+        save_window_data(i+1, X_train, X_test, y_train, y_test, predictions, fitted_models)
         
         # Add window information to results
         for model_name, model_results in results.items():
@@ -143,6 +177,8 @@ if __name__ == '__main__':
                 **model_results
             }
             results_all.append(window_results)
+        
+        
     
     # Convert results to DataFrame and save to CSV
     results_df = pd.DataFrame(results_all)
