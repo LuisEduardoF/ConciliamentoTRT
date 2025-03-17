@@ -130,26 +130,3 @@ def create_rolling_windows(df, date_col, window_size, window_step):
         start_date = start_date + window_step_delta
     
     return windows
-
-if __name__ == '__main__':
-    # Sample DataFrame.
-    data = {
-        'text': [
-            'Este é um exemplo de texto em Português, com algumas stopwords.',
-            'Outra frase para teste: removendo, pontuações e palavras irrelevantes!'
-        ],
-        'target': [0.8, 0.3]
-    }
-    df = pd.DataFrame(data)
-    
-    # 1. Filter out any rows with NaN values in the 'text' column.
-    df = filter_nan_values(df, ['text'])
-    
-    # 2. Create a binary label column from 'target'. 
-    #    (By default, values >= mean(target) get label 1, otherwise 0.)
-    df = create_label_column(df, target='target', new_col='label')
-    
-    # 3. Preprocess the 'text' column (storing the results in a new column 'processed_text').
-    df = preprocess_text_column(df, 'text', new_col='processed_text')
-    
-    print(df)
