@@ -2,6 +2,8 @@ import os
 import numpy as np
 import pandas as pd
 import torch
+import joblib
+from pathlib import Path
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 from transformers import AutoTokenizer, AutoModel, set_seed
@@ -26,6 +28,29 @@ def compute_metrics_from_labels(true_labels, predictions):
     f1 = f1_score(true_labels, predictions, average='macro', zero_division=0)
     return {"accuracy": acc, "precision": prec, "recall": rec, "f1": f1}
 
+def create_results_directory(base_path="llm_analysis/results/embedding"):
+    """Create the directory structure for saving results"""
+    base_dir = Path(base_path)
+    base_dir.mkdir(parents=True, exist_ok=True)
+    return base_dir
+
+def save_window_results(base_dir, window_index, y_test, y_pred, metrics, model):
+    """Save all results for a specific window"""
+    window_dir = base_dir / f"window_{window_index}"
+    window_dir.mkdir(exist_ok=True)
+    
+    # Save labels
+    pd.DataFrame({
+        'true_labels': y_test,
+        'predicted_labels': y_pred
+    }).to_csv(window_dir / 'labels.csv', index=False)
+    
+    # Save metrics
+    pd.DataFrame([metrics]).to_csv(window_dir / 'metrics.csv', index=False)
+    
+    # Save model
+    joblib.dump(model, window_dir / 'random_forest_model.joblib')
+
 if __name__ == '__main__':
     print("Loading dataset...")
     df = pd.read_parquet("data/updated_dataset_preprocessed.parquet.gzip")
@@ -46,6 +71,9 @@ if __name__ == '__main__':
     print("Model loaded successfully")
 
     results_list = []
+
+    # Create results directory
+    results_dir = create_results_directory()
 
     for window_index, window in enumerate(window_df):
         
@@ -132,6 +160,9 @@ if __name__ == '__main__':
         metrics["window"] = window_index
         results_list.append(metrics)
         
+        # Save all results for this window
+        save_window_results(results_dir, window_index, y_test, y_pred, metrics, clf)
+        
         # Print metrics for current window
         print(f"\nMetrics for Window {window_index}:")
         print(f"Accuracy: {metrics['accuracy']:.4f}")
@@ -145,6 +176,5 @@ if __name__ == '__main__':
     print("\nSaving final results...")
     # ----------------------------
     results_df = pd.DataFrame(results_list)
-    results_csv_path = "results_summary_random_forest.csv"
-    results_df.to_csv(results_csv_path, index=False)
-    print(f"Results successfully saved to {results_csv_path}")
+    results_df.to_csv(results_dir / "results_summary_random_forest.csv", index=False)
+    print(f"Results successfully saved to {results_dir}")

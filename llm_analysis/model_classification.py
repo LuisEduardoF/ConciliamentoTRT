@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import pandas as pd
+from pathlib import Path
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 from datasets import Dataset
@@ -38,6 +39,23 @@ def compute_metrics(eval_pred):
     f1 = f1_score(labels, predictions, average='macro', zero_division=0)
     return {"accuracy": acc, "precision": prec, "recall": rec, "f1": f1}
 
+def create_results_directory(base_path="llm_analysis/results/classification"):
+    """Create the directory structure for saving results"""
+    base_dir = Path(base_path)
+    base_dir.mkdir(parents=True, exist_ok=True)
+    return base_dir
+
+def save_window_results(base_dir, window_index, metrics, trainer):
+    """Save all results for a specific window"""
+    window_dir = base_dir / f"window_{window_index}"
+    window_dir.mkdir(exist_ok=True)
+    
+    # Save metrics
+    pd.DataFrame([metrics]).to_csv(window_dir / 'metrics.csv', index=False)
+    
+    # Save model
+    trainer.save_model(window_dir / 'final_model')
+
 if __name__ == '__main__':
 
     # df = dp.load_dataset('data/updated_dataset.parquet.gzip')
@@ -57,6 +75,9 @@ if __name__ == '__main__':
     # Process Each Window and Train/Evaluate the Model
     # ----------------------------
     results_list = []
+
+    # Create results directory
+    results_dir = create_results_directory()
 
     # Assume window_df is a list/array of DataFrames, one for each time window.
     # Each DataFrame must contain the categorical columns and a target column dp.TARGET_COL
@@ -99,7 +120,7 @@ if __name__ == '__main__':
         test_dataset.set_format(type="torch", columns=["input_ids", "attention_mask", dp.TARGET_COL])
         
         # Define training arguments for this window
-        output_dir = f"./llm_analysis/results/window_{window_index}"
+        output_dir = str(results_dir / f"window_{window_index}")
         os.makedirs(output_dir, exist_ok=True)
         
         training_args = TrainingArguments(
@@ -113,7 +134,7 @@ if __name__ == '__main__':
             seed=seed_val,
             lr_scheduler_type=lr_scheduler_type,
             save_strategy="epoch",
-            logging_dir=f"./logs/window_{window_index}"
+            logging_dir=str(results_dir / f"window_{window_index}" / "logs")
         )
         
         # Create Trainer instance
@@ -134,6 +155,9 @@ if __name__ == '__main__':
         metrics["window"] = window_index  # Track window identifier
         results_list.append(metrics)
         
+        # Save results using the new methodology
+        save_window_results(results_dir, window_index, metrics, trainer)
+        
         # Print metrics for current window
         print(f"\nMetrics per Window {window_index}:")
         print(f"Accuracy: {metrics['eval_accuracy']:.4f}")
@@ -142,13 +166,8 @@ if __name__ == '__main__':
         print(f"F1 Score: {metrics['eval_f1']:.4f}")
         print("-" * 50)
         
-        # Optionally, save the model for this window
-        trainer.save_model(os.path.join(output_dir, "final_model"))
-
-    # ----------------------------
-    # Save All Results to CSV
-    # ----------------------------
+    # Save final results summary
+    print("\nSaving final results...")
     results_df = pd.DataFrame(results_list)
-    results_csv_path = "results_summary.csv"
-    results_df.to_csv(results_csv_path, index=False)
-    print(f"Results saved to {results_csv_path}")
+    results_df.to_csv(results_dir / "results_summary_classification.csv", index=False)
+    print(f"Results successfully saved to {results_dir}")
