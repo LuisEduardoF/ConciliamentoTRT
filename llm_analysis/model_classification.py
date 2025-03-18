@@ -12,7 +12,7 @@ from transformers import (
     set_seed,
 )
 
-import classical_analysis.data_preprocessing as dp
+import data_preprocessing as dp
 
 # ----------------------------
 # Hyperparameters
@@ -40,10 +40,10 @@ def compute_metrics(eval_pred):
 
 if __name__ == '__main__':
 
-    df = dp.load_dataset('data/updated_dataset.parquet.gzip')
+    # df = dp.load_dataset('data/updated_dataset.parquet.gzip')
 
-    df = df.sample(100, random_state=42)  # Test
-    
+    # df = df.sample(100, random_state=42)  # Test
+    df= pd.read_parquet("data/updated_dataset_preprocessed.parquet.gzip")
     window_df = dp.create_rolling_windows(df, date_col=dp.TIME_COL, window_size=2, window_step=6)
 
     # ----------------------------
@@ -61,12 +61,21 @@ if __name__ == '__main__':
     # Assume window_df is a list/array of DataFrames, one for each time window.
     # Each DataFrame must contain the categorical columns and a target column dp.TARGET_COL
     for window_index, window in enumerate(window_df):
+        
+        print(f"\nProcessing Window {window_index+1} (from {window[dp.TIME_COL].min().date()} to {window[dp.TIME_COL].max().date()}):")
+        
+        # Print label distribution for the whole window
+        print("\nWindow Label Distribution:")
+        print(window[dp.TARGET_COL].value_counts())
+        print(f"Total samples in window: {len(window)}")
+        print("-" * 30)
+        
         # Make a copy to avoid modifying the original
         window = window.copy()
         
         # Create a new "text" column by concatenating the categorical columns
         window["text"] = window[dp.CATEGORICAL_COLS].astype(str).apply(lambda x: " ".join(x), axis=1)
-        
+
         # Ensure the target column 'label' exists
         if dp.TARGET_COL not in window.columns:
             raise ValueError("Target column 'label' not found in the DataFrame for window {}".format(window_index))
@@ -90,7 +99,7 @@ if __name__ == '__main__':
         test_dataset.set_format(type="torch", columns=["input_ids", "attention_mask", dp.TARGET_COL])
         
         # Define training arguments for this window
-        output_dir = f"./results/window_{window_index}"
+        output_dir = f"./llm_analysis/results/window_{window_index}"
         os.makedirs(output_dir, exist_ok=True)
         
         training_args = TrainingArguments(
@@ -121,8 +130,17 @@ if __name__ == '__main__':
         
         # Evaluate on the test set
         metrics = trainer.evaluate()
+        
         metrics["window"] = window_index  # Track window identifier
         results_list.append(metrics)
+        
+        # Print metrics for current window
+        print(f"\nMetrics per Window {window_index}:")
+        print(f"Accuracy: {metrics['eval_accuracy']:.4f}")
+        print(f"Precision: {metrics['eval_precision']:.4f}")
+        print(f"Recall: {metrics['eval_recall']:.4f}")
+        print(f"F1 Score: {metrics['eval_f1']:.4f}")
+        print("-" * 50)
         
         # Optionally, save the model for this window
         trainer.save_model(os.path.join(output_dir, "final_model"))

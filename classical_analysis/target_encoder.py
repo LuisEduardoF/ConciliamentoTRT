@@ -15,6 +15,9 @@ class TargetEncoder:
         self.encoding_map = {}         # Mapping for each column.
         self.fitted_columns = []       # List of columns that were fitted.
 
+    def __return_encoding_map(self):
+        return self.encoding_map
+    
     def fit(self, X, target, columns):
         """
         Fit the encoder on the training data. This function calculates the 
@@ -57,7 +60,8 @@ class TargetEncoder:
                 count = stat['count']
                 cat_mean = stat['sum'] / count if count > 0 else 0
                 self.encoding_map[col][cat] = (count * cat_mean + self.smoothing * self.global_mean) / (count + self.smoothing)
-                
+            
+            print(self.encoding_map)
         return self
 
     def transform(self, X, columns=None):
@@ -129,7 +133,7 @@ if __name__ == "__main__":
     test_df = pd.DataFrame(test_data)
 
     # Instantiate the encoder.
-    encoder = TargetEncoder(smoothing=1.0, col_delimiters={'multiple_prios': ';'})
+    encoder = TargetEncoder(smoothing=1.0, col_delimiters={'multiple_priors': ';'})
 
     # Fit the encoder on the training data.
     encoder.fit(train_df, target='target', columns=['single_prior', 'multiple_priors'])
