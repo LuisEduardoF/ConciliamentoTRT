@@ -146,6 +146,7 @@ The workflow is configured with the `workflow_dispatch` trigger. This means it w
    You can view the logs and output of each step by clicking on the running workflow.
 
 The Action tab: [Action List](https://github.com/LuisEduardoF/Conciliamento_TRT/actions)
+
 ---
 
 ## Article Versioning
