@@ -106,36 +106,46 @@ To run the project on your Linux machine, follow these steps:
    This will execute the methodology and print the outputs directly in your terminal.
 
 ### Automated Execution with GitHub Actions
+This repository includes a GitHub Actions workflow that lets you manually execute three Python scripts:
 
-This repository leverages GitHub Actions to automatically run the analysis scripts whenever you push new commits or open a pull request on the `main` branch.
+- `classical_analysis/model.py`: Classical Methodology
+- `llm_analysis/llm_embedding.py`: Feature extractraction with BERTimbau
+- `llm_analysis/llm_classification.py`: BERTimbau with a classifier head (NLP)
 
-**How It Works:**
+### How It Works
 
-- **Trigger Conditions:**  
-  The workflow is activated on any push or pull request targeting the `main` branch.
+The workflow is configured with the `workflow_dispatch` trigger. This means it will only run when you manually start it from the GitHub Actions tab. The workflow does the following:
 
-- **Python Environment:**  
-  The job is executed using a matrix strategy that tests your code on Python 3.8, 3.9, and 3.10 to ensure compatibility.
+1. **Checks Out the Repository:**  
+   It downloads the latest version of your code.
 
-- **Workflow Steps:**
-  1. **Checkout Repository:**  
-     The workflow starts by cloning your repository.
-  2. **Setup Python:**  
-     It sets up the designated Python version based on the matrix.
-  3. **Install Dependencies:**  
-     Pip is upgraded and the packages listed in `requirements.txt` are installed.
-  4. **Execute Scripts:**  
-     The following Python scripts are run in sequence using the unbuffered mode (`-u` flag) so that all print statements are immediately output:
-     - `classical_analysis/model.py`
-     - `llm_analysis/llm_embedding.py`
-     - `llm_analysis/llm_classification.py`
+2. **Sets Up Python:**  
+   It installs the specified Python version (3.10).
 
-- **Viewing Output:**  
-  All the print outputs and logs are captured by GitHub Actions. To inspect them:
-  1. Navigate to the **Actions** tab in your repository.
-  2. Click on the desired workflow run.
-  3. Expand each step to view the detailed stdout and stderr.
- [Action List](https://github.com/LuisEduardoF/Conciliamento_TRT/actions)
+3. **Installs Dependencies:**  
+   It installs the packages listed in `requirements.txt`.
+
+4. **Runs the Scripts:**  
+   It executes each of the three Python scripts in sequence.
+
+### How to Trigger the Workflow Manually
+
+1. **Commit and Push the Workflow File:**  
+   Ensure that the workflow file (e.g., `.github/workflows/run-scripts.yml`) is committed to your repository.
+
+2. **Navigate to the Actions Tab:**  
+   In your GitHub repository, click on the **Actions** tab at the top.
+
+3. **Select the Workflow:**  
+   Find the workflow titled **"Run Python Analysis Scripts"** (or the name you gave it) in the list.
+
+4. **Run the Workflow:**  
+   Click on the **"Run workflow"** button. You might be prompted to confirm; go ahead and start the workflow.
+
+5. **Monitor Execution:**  
+   You can view the logs and output of each step by clicking on the running workflow.
+
+The Action tab: [Action List](https://github.com/LuisEduardoF/Conciliamento_TRT/actions)
 ---
 
 ## Article Versioning
