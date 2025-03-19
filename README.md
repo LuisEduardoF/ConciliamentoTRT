@@ -87,8 +87,8 @@ To run the project on your Linux machine, follow these steps:
 1. **Clone the repository:**
 
    ```bash
-     git clone https://github.com/yourusername/your-repo-name.git
-     cd your-repo-name
+     git clone https://github.com/LuisEduardoF/Conciliamento_TRT.git
+     cd Conciliamento_TRT
    ```
 2. **Install dependecies:**
   Make sure you have Python (3.10) installed, then install the required packages:
@@ -135,12 +135,12 @@ This repository leverages GitHub Actions to automatically run the analysis scrip
   1. Navigate to the **Actions** tab in your repository.
   2. Click on the desired workflow run.
   3. Expand each step to view the detailed stdout and stderr.
-
+ [Action List](https://github.com/LuisEduardoF/Conciliamento_TRT/actions)
 ---
 
 ## Article Versioning
 
-The project uses a versioning system for its article documentation, stored on the project’s wiki under **[VER] Articles versioning**. Each version corresponds to a specific stage in the development of the article:
+The project uses a versioning system for its article documentation, stored on the project’s wiki under **[VER] Articles versioning** ! [Article Versioning](https://github.com/LuisEduardoF/Conciliamento_TRT/wiki/%5BVER%5D-Articles-versioning). Each version corresponds to a specific stage in the development of the article:
 
 - **(W) Work:**  
   Draft versions or college works articles.
