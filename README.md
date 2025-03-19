@@ -7,6 +7,26 @@
 </table>
 </div>
 
+# Table of Contents
+
+- [Previsão de Resultados de Conciliação em Decisões Judiciais](#previsão-de-resultados-de-conciliação-em-decisões-judiciais)
+- [Overview](#overview)
+- [Motivation](#motivation)
+- [Data Description](#data-description)
+- [Methodology](#methodology)
+  - [Classical Machine Learning Approach](#classical-machine-learning-approach-baseline-approach)
+  - [Large Language Models Approach](#large-language-models-approach)
+- [Results](#results)
+- [Conclusions](#conclusions)
+- [References](#references)
+- [Running the Project](#running-the-project)
+  - [Locally on a Linux Terminal](#locally-on-a-linux-terminal)
+  - [Automated Execution with GitHub Actions](#automated-execution-with-github-actions)
+    - [How It Works](#how-it-works)
+    - [How to Trigger the Workflow Manually](#how-to-trigger-the-workflow-manually)
+- [Article Versioning](#article-versioning)
+- [Contact](#contact)
+
 # Previsão de Resultados de Conciliação em Decisões Judiciais
 
 This repository contains the code and analysis from the research project **"Previsão de Resultados de Conciliação em Decisões Judiciais na Vara do Trabalho do Espírito Santo"** by Luís Eduardo Freire da Câmara. The project investigates methods to predict conciliation outcomes in labor court cases using both classical machine learning techniques and state-of-the-art Large Language Models (LLMs).
@@ -78,7 +98,7 @@ The study demonstrates that incorporating LLMs into judicial prediction models s
 - Additional literature on legal decision prediction and related machine learning techniques.
 - Documentation for the libraries and tools used (e.g., scikit-learn, pandas, numpy, NLTK).
 
-## Running the Project
+# Running the Project
 
 ### Locally on a Linux Terminal
 
@@ -160,4 +180,5 @@ The project uses a versioning system for its article documentation, stored on th
 - **(P) Publication:**  
   Finalized versions intended for publication.
 
+### Contact
 For questions or further information, please contact Luís Eduardo Freire da Câmara at [luis.camara@edu.ufes.br].
