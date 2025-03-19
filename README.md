@@ -77,3 +77,76 @@ The study demonstrates that incorporating LLMs into judicial prediction models s
 - Lage-Freitas, A., Allende-Cid, H., Santana, O., & de Oliveira-Lage, L. (2019). *Predicting Brazilian Court Decisions.* [arXiv:1905.10348](https://arxiv.org/abs/1905.10348)
 - Additional literature on legal decision prediction and related machine learning techniques.
 - Documentation for the libraries and tools used (e.g., scikit-learn, pandas, numpy, NLTK).
+
+## Running the Project
+
+### Locally on a Linux Terminal
+
+To run the project on your Linux machine, follow these steps:
+
+1. **Clone the repository:**
+
+   ```bash
+     git clone https://github.com/yourusername/your-repo-name.git
+     cd your-repo-name
+   ```
+2. **Install dependecies:**
+  Make sure you have Python (3.10) installed, then install the required packages:
+
+  ```bash
+    pip install --upgrade pip
+    pip install -r requirements.txt
+   ```
+3. **Run the analysis scripts:**
+   ```bash
+     python -u classical_analysis/model.py
+     python -u llm_analysis/llm_embedding.py
+     python -u llm_analysis/llm_classification.py
+    ```
+   This will execute the methodology and print the outputs directly in your terminal.
+
+### Automated Execution with GitHub Actions
+
+This repository leverages GitHub Actions to automatically run the analysis scripts whenever you push new commits or open a pull request on the `main` branch.
+
+**How It Works:**
+
+- **Trigger Conditions:**  
+  The workflow is activated on any push or pull request targeting the `main` branch.
+
+- **Python Environment:**  
+  The job is executed using a matrix strategy that tests your code on Python 3.8, 3.9, and 3.10 to ensure compatibility.
+
+- **Workflow Steps:**
+  1. **Checkout Repository:**  
+     The workflow starts by cloning your repository.
+  2. **Setup Python:**  
+     It sets up the designated Python version based on the matrix.
+  3. **Install Dependencies:**  
+     Pip is upgraded and the packages listed in `requirements.txt` are installed.
+  4. **Execute Scripts:**  
+     The following Python scripts are run in sequence using the unbuffered mode (`-u` flag) so that all print statements are immediately output:
+     - `classical_analysis/model.py`
+     - `llm_analysis/llm_embedding.py`
+     - `llm_analysis/llm_classification.py`
+
+- **Viewing Output:**  
+  All the print outputs and logs are captured by GitHub Actions. To inspect them:
+  1. Navigate to the **Actions** tab in your repository.
+  2. Click on the desired workflow run.
+  3. Expand each step to view the detailed stdout and stderr.
+
+---
+
+## Article Versioning
+
+The project uses a versioning system for its article documentation, stored on the project’s wiki under **[VER] Articles versioning**. Each version corresponds to a specific stage in the development of the article:
+
+- **(W) Work:**  
+  Draft versions or college works articles.
+- **(TH) Thesis:**  
+  Versions that are formatted or refined for thesis submission.
+- **(P) Publication:**  
+  Finalized versions intended for publication.
+
+For questions or further information, please contact Luís Eduardo Freire da Câmara at [luis.camara@edu.ufes.br].
