@@ -53,14 +53,13 @@ The project explores two primary approaches for predicting case outcomes:
 - **LLM Classification with HuggingFace Trainer:**
   - A pre-trained sequence classification model is fine-tuned using the HuggingFace Trainer.
   - This approach integrates tokenization, dataset conversion, and model training in one streamlined process.
-
+![Comparação entre os modelos](static/Conciliamento.drawio.png)
 ## Results
 
 - **Traditional Models:** Achieved F1-macro scores between 0.60 and 0.65.
 - **LLM Approaches:** 
   - The feature extraction method reached scores around 0.67.
   - The LLM classification approach achieved scores frequently above 0.70, demonstrating improved performance and lower dispersion in results.
-
 ## Conclusions
 
 The study demonstrates that incorporating LLMs into judicial prediction models significantly enhances performance compared to classical approaches. Although LLMs introduce challenges such as increased computational costs and complexity, their ability to capture semantic nuances makes them a promising tool for aiding judicial decision-making.
