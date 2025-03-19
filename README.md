@@ -87,13 +87,13 @@ To run the project on your Linux machine, follow these steps:
 1. **Clone the repository:**
 
    ```bash
-     git clone https://github.com/LuisEduardoF/Conciliamento_TRT.git
-     cd Conciliamento_TRT
+   git clone https://github.com/LuisEduardoF/Conciliamento_TRT.git
+   cd Conciliamento_TRT
    ```
 2. **Install dependecies:**
   Make sure you have Python (3.10) installed, then install the required packages:
 
-  ```bash
+    ```bash
     pip install --upgrade pip
     pip install -r requirements.txt
    ```
