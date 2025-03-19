@@ -62,6 +62,12 @@ The project explores two primary approaches for predicting case outcomes:
 - **LLM Approaches:** 
   - The feature extraction method reached scores around 0.67.
   - The LLM classification approach achieved scores frequently above 0.70, demonstrating improved performance and lower dispersion in results.
+ 
+![F1 model 1](static/f1_modelo.png)
+
+![Model Comparation](static/f1_tempo.png)
+
+
 ## Conclusions
 
 The study demonstrates that incorporating LLMs into judicial prediction models significantly enhances performance compared to classical approaches. Although LLMs introduce challenges such as increased computational costs and complexity, their ability to capture semantic nuances makes them a promising tool for aiding judicial decision-making.
