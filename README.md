@@ -53,7 +53,9 @@ The project explores two primary approaches for predicting case outcomes:
 - **LLM Classification with HuggingFace Trainer:**
   - A pre-trained sequence classification model is fine-tuned using the HuggingFace Trainer.
   - This approach integrates tokenization, dataset conversion, and model training in one streamlined process.
-![Comparação entre os modelos](static/3.drawio.svg)
+
+![Model Comparation](static/3.drawio.svg)
+
 ## Results
 
 - **Traditional Models:** Achieved F1-macro scores between 0.60 and 0.65.
