@@ -9,90 +9,63 @@
 
 # Predicting Conciliation Outcomes in court decisions at Vara de Trabalho of Espírito Santo
 
-This repository presents a project for predicting whether a judicial decision (Julgamento) in the labor courts of Espírito Santo will end in a **Conciliação**. Inspired by prior work in legal decision prediction, this project adapts and extends existing methodologies to a new dataset and target outcome.
+# Previsão de Resultados de Conciliação em Decisões Judiciais
 
-## Introduction
+This repository contains the code and analysis from the research project **"Previsão de Resultados de Conciliação em Decisões Judiciais na Vara do Trabalho do Espírito Santo"** by Luís Eduardo Freire da Câmara. The project investigates methods to predict conciliation outcomes in labor court cases using both classical machine learning techniques and state-of-the-art Large Language Models (LLMs).
 
-The project focuses on the prediction of case outcomes for labor court decisions in Espírito Santo. Unlike previous studies that dealt with multiple decision labels, our primary goal is to determine if a case will be resolved by conciliation. The dataset used contains detailed case information, ranging from procedural identifiers to case specifics, which are key to building robust predictive models.
+## Overview
 
-## Objective
+The Brazilian labor justice system faces a significant increase in case volume, with new processes rising by 28.7% in 2023. Conciliation plays a critical role in resolving cases efficiently; however, predicting which cases will be resolved via conciliation remains challenging. This work compares traditional natural language processing (NLP) techniques with LLM-based approaches to forecast whether a labor case will be settled through conciliation or by judicial sentence.
 
-The main objective is to compare three different approaches to predict the outcome of a case as **Conciliação** or not. The project aims to:
+## Motivation
 
-- Provide a baseline using classical machine learning techniques.
-- Leverage large language models to extract deep semantic features.
-- Evaluate the performance of an end-to-end LLM classification pipeline.
+- **Judicial Overload:** With millions of cases, the system is under pressure.
+- **Efficiency:** Early prediction of conciliation can help allocate judicial resources better.
+- **Innovation:** Leveraging LLMs shows promise for capturing nuanced semantic information from legal texts, potentially outperforming traditional models.
 
-The outcome of interest is whether the case concludes with **Conciliação**.
+## Data Description
+
+The dataset consists of essential information for predicting conciliation outcomes in labor cases, organized into three main categories:
+
+- **Identification and Classification:** Unique process identifiers and litigation types.
+- **Economic and Party Characteristics:** Details such as the value of the claim, the nature of the parties (public or private), and the number of claimants/defendants.
+- **Temporal and Outcome Data:** Dates of filing and judgment, and a binary indicator for conciliation (1) or judicial sentence (0).
+
+Additional textual features include details like the Labor Court, Activity Branch, Procedural Class, Origin City, OAB information, subjects, and associated documents.
 
 ## Methodology
 
-The dataset for this project, derived from *"Julgamentos da vara de trabalho no Espírito Santo"*, includes the following columns:
+The project explores two primary approaches for predicting case outcomes:
 
-- **NÚMERO DO PROCESSO**
-- **CLASSE PROCESSUAL**
-- **VARA DO TRABALHO**
-- **MAGISTRADO**
-- **ASSUNTOS**
-- **PORTADOR DEFICIÊNCIA**
-- **SEGREDO DE JUSTIÇA**
-- **RECDA ATIVA-INATIVA**
-- **RECDA PES FÍS OU JUR**
-- **OAB**
-- **VALOR DA CAUSA**
-- **RAMO DE ATIVIDADE**
-- **CIDADE ORIG PET INICIAL**
-- **ENTE PUB OU PRIV**
-- **INDICADOR DO PROC**
-- **QTD RTE**
-- **QTD RDO**
-- **TIPO DE SOLUÇÃO**
-- **DATA DE JULGAMENTO**
-- **DATA DE AJUIZAMENTO**
-- **DOCUMENTOS DAS RECLAMADAS**
-- **DOCUMENTOS DOS RECLAMANTES**
+### 1. Classical Machine Learning Approach (Baseline)
+- **Preprocessing:** 
+  - Removal of null entries and duplicates.
+  - Conversion to lowercase, tokenization, and stopwords removal.
+- **Windowing Strategy:** 
+  - Data is divided into overlapping 2-year windows (with a 6-month shift) to capture temporal patterns.
+- **Model Training:** 
+  - Techniques such as Logistic Regression, Random Forest, and Gradient Boosting are applied.
+  - Target encoding with smoothing is used to handle categorical text features.
+  - Models are evaluated using metrics like accuracy, precision, recall, and F1-macro score.
 
-We propose a three-pronged approach:
+### 2. Large Language Models (LLM) Approaches
+- **LLM Feature Extraction:**
+  - Texts are tokenized and processed using BERTimbau (a BERT model pre-trained on Portuguese) to extract high-dimensional embeddings.
+  - A Random Forest classifier is then trained on these embeddings.
+- **LLM Classification with HuggingFace Trainer:**
+  - A pre-trained sequence classification model is fine-tuned using the HuggingFace Trainer.
+  - This approach integrates tokenization, dataset conversion, and model training in one streamlined process.
 
-1. **Baseline Approach (Classical Machine Learning):**  
-   - **Models:** Random Forest, Logistic Regression, and Gradient Boosting.  
-   - **Preprocessing:** Categorical variables are processed using Target Encoding.  
-   - **Goal:** Establish a robust baseline for predicting if a decision ends as **Conciliação**.
+## Results
 
-2. **LLM Embedding Approach:**  
-   - **Process:** Use a large language model (LLM) to generate embeddings from the textual components of the case data.  
-   - **Application:** The embeddings are then fed into a traditional classifier.  
-   - **Goal:** Leverage semantic features from the text to potentially improve prediction accuracy.
+- **Traditional Models:** Achieved F1-macro scores between 0.60 and 0.65.
+- **LLM Approaches:** 
+  - The feature extraction method reached scores around 0.67.
+  - The LLM classification approach achieved scores frequently above 0.70, demonstrating improved performance and lower dispersion in results.
 
-3. **LLM Classification Approach:**  
-   - **Method:** Directly use a classification model based on a large language model, which processes the input data end-to-end.  
-   - **Goal:** Compare the performance of an LLM-based classifier with that of the embedding-based method and the classical baseline.
+## Conclusions
 
-## How to Use It
-
-1. **Setup:**  
-   - Clone the repository.
-   - Install the required dependencies from `requirements.txt`.
-   - Configure any necessary API keys if using external LLM services.
-
-2. **Data Preparation:**  
-   - Ensure the dataset is available in the correct format.
-   - Preprocess the data:
-     - Handle missing values.
-     - Apply Target Encoding for categorical variables (for the baseline approach).
-     - Split the dataset into training and testing sets.
-
-3. **Model Training and Evaluation:**  
-   - Run the provided scripts to train the baseline models (Random Forest, Logistic Regression, and Gradient Boosting).
-   - For the LLM-based approaches:
-     - Execute the embedding extraction pipeline, then train a classifier on these embeddings.
-     - Alternatively, run the end-to-end LLM classification script.
-   - Evaluate each model using metrics such as accuracy and F1-score.
-   - Compare the performance across all three approaches.
-
-4. **Deployment:**  
-   - Use the provided notebooks or scripts to reproduce the experiments.
-   - Adjust configuration parameters as needed for deployment.
+The study demonstrates that incorporating LLMs into judicial prediction models significantly enhances performance compared to classical approaches. Although LLMs introduce challenges such as increased computational costs and complexity, their ability to capture semantic nuances makes them a promising tool for aiding judicial decision-making.
 
 ## References
 
