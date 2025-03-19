@@ -7,8 +7,6 @@
 </table>
 </div>
 
-# Predicting Conciliation Outcomes in court decisions at Vara de Trabalho of Espírito Santo
-
 # Previsão de Resultados de Conciliação em Decisões Judiciais
 
 This repository contains the code and analysis from the research project **"Previsão de Resultados de Conciliação em Decisões Judiciais na Vara do Trabalho do Espírito Santo"** by Luís Eduardo Freire da Câmara. The project investigates methods to predict conciliation outcomes in labor court cases using both classical machine learning techniques and state-of-the-art Large Language Models (LLMs).
