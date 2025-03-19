@@ -65,13 +65,6 @@ if __name__ == '__main__':
     window_df = dp.create_rolling_windows(df, date_col=dp.TIME_COL, window_size=2, window_step=6)
 
     # ----------------------------
-    # Load Pre-trained Model & Tokenizer
-    # ----------------------------
-    model_name = "neuralmind/bert-base-portuguese-cased"  # Change if necessary
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=2)
-
-    # ----------------------------
     # Process Each Window and Train/Evaluate the Model
     # ----------------------------
     results_list = []
@@ -84,6 +77,13 @@ if __name__ == '__main__':
     for window_index, window in enumerate(window_df):
         
         print(f"\nProcessing Window {window_index+1} (from {window[dp.TIME_COL].min().date()} to {window[dp.TIME_COL].max().date()}):")
+        
+        # ----------------------------
+        # Load Pre-trained Model & Tokenizer
+        # ----------------------------
+        model_name = "neuralmind/bert-base-portuguese-cased"  # Change if necessary
+        tokenizer = AutoTokenizer.from_pretrained(model_name)
+        model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=2)
         
         # Print label distribution for the whole window
         print("\nWindow Label Distribution:")

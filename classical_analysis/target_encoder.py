@@ -60,8 +60,6 @@ class TargetEncoder:
                 count = stat['count']
                 cat_mean = stat['sum'] / count if count > 0 else 0
                 self.encoding_map[col][cat] = (count * cat_mean + self.smoothing * self.global_mean) / (count + self.smoothing)
-            
-            print(self.encoding_map)
         return self
 
     def transform(self, X, columns=None):

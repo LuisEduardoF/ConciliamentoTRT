@@ -60,16 +60,6 @@ if __name__ == '__main__':
     window_df = dp.create_rolling_windows(df, date_col=dp.TIME_COL, window_size=2, window_step=6)
     print(f"Created {len(window_df)} windows")
 
-    print("\nLoading BERT model and tokenizer...")
-    model_name = "neuralmind/bert-base-portuguese-cased"
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModel.from_pretrained(model_name)
-    model.eval()
-    if torch.cuda.is_available():
-        model.to("cuda")
-        print("Model moved to GPU")
-    print("Model loaded successfully")
-
     results_list = []
 
     # Create results directory
@@ -79,6 +69,16 @@ if __name__ == '__main__':
         
         print(f"\nProcessing Window {window_index+1} (from {window[dp.TIME_COL].min().date()} to {window[dp.TIME_COL].max().date()}):")
         
+        print("\nLoading BERT model and tokenizer...")
+        model_name = "neuralmind/bert-base-portuguese-cased"
+        tokenizer = AutoTokenizer.from_pretrained(model_name)
+        model = AutoModel.from_pretrained(model_name)
+        model.eval()
+        if torch.cuda.is_available():
+            model.to("cuda")
+            print("Model moved to GPU")
+        print("Model loaded successfully")
+    
         # Print label distribution for the whole window
         print("\nWindow Label Distribution:")
         print(window[dp.TARGET_COL].value_counts())
