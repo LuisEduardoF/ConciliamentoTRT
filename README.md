@@ -74,7 +74,10 @@ The project explores two primary approaches for predicting case outcomes:
   - A pre-trained sequence classification model is fine-tuned using the HuggingFace Trainer.
   - This approach integrates tokenization, dataset conversion, and model training in one streamlined process.
 
+
 ![Model Comparation](static/3.drawio.svg)
+**Comparison between classical methodology (top left) with feature extraction strategy with LLM (top right) and classifiable LLM (bottom middle)**
+
 
 ## Results
 
