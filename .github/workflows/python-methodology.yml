@@ -25,7 +25,7 @@ jobs:
         run: python -u classical_analysis/model.py
 
       - name: Run llm_analysis/llm_embedding.py
-        run: python -u llm_analysis/llm_embedding.py
+        run: python -u llm_analysis/model_embedding.py
 
       - name: Run llm_analysis/llm_classification.py
-        run: python -u llm_analysis/llm_classification.py
+        run: python -u llm_analysis/model_classification.py
