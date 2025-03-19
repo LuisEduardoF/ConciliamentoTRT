@@ -45,6 +45,7 @@ def load_dataset(path):
     print("Loading dataset from", path)
     df = pd.read_parquet(path)
     
+    df.drop_duplicates(subset=['NÚMERO DO PROCESSO'], keep='last', ignore_index=True, inplace=True)
     # df = df.sample(100, random_state=42) # Test 
     
     df.dropna(inplace=True)
