@@ -1,4 +1,4 @@
-name: Run Python Analysis
+name: Run Methodology
 
 on:
   push:
