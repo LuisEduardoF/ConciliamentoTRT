@@ -12,6 +12,8 @@ from transformers import (
     TrainingArguments,
     set_seed,
 )
+import torch
+from captum.attr import IntegratedGradients
 
 import data_preprocessing as dp
 
@@ -61,7 +63,7 @@ if __name__ == '__main__':
     # df = dp.load_dataset('data/updated_dataset.parquet.gzip')
 
     # df = df.sample(100, random_state=42)  # Test
-    df= pd.read_parquet("data/updated_dataset_preprocessed.parquet.gzip")
+    df = pd.read_parquet("data/updated_dataset_preprocessed.parquet.gzip")
     window_df = dp.create_rolling_windows(df, date_col=dp.TIME_COL, window_size=2, window_step=6)
 
     # ----------------------------
@@ -75,6 +77,8 @@ if __name__ == '__main__':
     # Assume window_df is a list/array of DataFrames, one for each time window.
     # Each DataFrame must contain the categorical columns and a target column dp.TARGET_COL
     for window_index, window in enumerate(window_df):
+        if window_index != 10:
+            continue
         
         print(f"\nProcessing Window {window_index+1} (from {window[dp.TIME_COL].min().date()} to {window[dp.TIME_COL].max().date()}):")
         
@@ -164,6 +168,69 @@ if __name__ == '__main__':
         print(f"Precision: {metrics['eval_precision']:.4f}")
         print(f"Recall: {metrics['eval_recall']:.4f}")
         print(f"F1 Score: {metrics['eval_f1']:.4f}")
+        print("-" * 50)
+        
+        # ----------------------------
+        # Integrated Gradients Attribution for a Sample Test Instance
+        # ----------------------------
+        print("\n=== Starting Integrated Gradients Analysis ===")
+        print("This analysis helps understand which parts of the input text most influenced the model's decision")
+        
+        # Select a sample from the test dataset
+        sample = test_dataset[0]
+        input_ids_sample = sample["input_ids"].unsqueeze(0)
+        attention_mask_sample = sample["attention_mask"].unsqueeze(0)
+        sample_label = sample[dp.TARGET_COL]
+        
+        print(f"\nAnalyzing sample with true label: {sample_label}")
+        print("Preparing input embeddings...")
+        
+        # Obtain embeddings for the sample using the model's embedding layer
+        embedding_layer = model.get_input_embeddings()
+        embeddings = embedding_layer(input_ids_sample)
+        print(f"Input embedding shape: {embeddings.shape}")
+
+        # Define a forward function that takes embeddings as input
+        def forward_func(input_embeds):
+            outputs = model(inputs_embeds=input_embeds, attention_mask=attention_mask_sample)
+            return outputs.logits
+
+        print("\nInitializing Integrated Gradients...")
+        # Create IntegratedGradients instance with the forward function
+        ig = IntegratedGradients(forward_func)
+        
+        # Use a baseline of zero embeddings (same shape as embeddings)
+        baseline = torch.zeros_like(embeddings)
+        print("Using zero embeddings as baseline for attribution")
+        
+        print("\nComputing attributions...")
+        # Compute Integrated Gradients attributions
+        attributions, delta = ig.attribute(embeddings, baseline, target=sample_label, return_convergence_delta=True)
+        print(f"Convergence delta: {delta.item():.6f}")
+        
+        # Sum attributions across embedding dimensions
+        attributions_sum = attributions.sum(dim=-1).squeeze(0)
+        
+        # Convert input ids to tokens for readability
+        tokens = tokenizer.convert_ids_to_tokens(input_ids_sample[0])
+        
+        print("\n=== Token Attribution Analysis ===")
+        print("Positive values indicate tokens that pushed towards the prediction")
+        print("Negative values indicate tokens that pushed against the prediction")
+        print("-" * 50)
+        
+        # Find max attribution for scaling
+        max_attr = max(abs(score) for score in attributions_sum.tolist())
+        for token, score in zip(tokens, attributions_sum.tolist()):
+            # Scale the score for better visualization
+            scaled_score = score / max_attr
+            # Add direction indicators
+            direction = "→" if score > 0 else "←" if score < 0 else "•"
+            print(f"Token: {token:15} | Attribution: {score:>8.4f} {direction} | Scaled: {scaled_score:>8.4f}")
+        
+        print("\n=== Analysis Complete ===")
+        print(f"Total number of tokens analyzed: {len(tokens)}")
+        print(f"Average attribution magnitude: {attributions_sum.abs().mean().item():.4f}")
         print("-" * 50)
         
     # Save final results summary
