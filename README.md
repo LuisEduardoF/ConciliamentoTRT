@@ -101,6 +101,12 @@ The study demonstrates that incorporating LLMs into judicial prediction models s
 - Additional literature on legal decision prediction and related machine learning techniques.
 - Documentation for the libraries and tools used (e.g., scikit-learn, pandas, numpy, NLTK).
 
+# Git Structure
+```classical_analysis/```: This directory includes scripts and notebooks related to classical statistical analysis techniques applied in the project.
+```data/```: Stores datasets used for training and evaluation. This directory should be populated with the necessary data files before running the analysis scripts.
+```notebooks/```: Jupyter notebooks used for exploratory data analysis, visualizations, and model development. This is the primary workspace for interactive development.
+```llm_analysis/```: Contains analysis related to large language models (LLMs), including model training and evaluation scripts.
+
 # Running the Project
 
 ### Locally on a Linux Terminal
