@@ -75,8 +75,8 @@ The project explores two primary approaches for predicting case outcomes:
   - This approach integrates tokenization, dataset conversion, and model training in one streamlined process.
 
 
-![Model Comparation](static/3.drawio.svg)
-**Comparison between classical methodology (top left) with feature extraction strategy with LLM (top right) and classifiable LLM (bottom middle)**
+![Model Comparation](static/workflow.svg)
+**Workflow diagram comparing the different methodologies**
 
 
 ## Results
@@ -110,17 +110,26 @@ To run the project on your Linux machine, follow these steps:
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/LuisEduardoF/Conciliamento_TRT.git
-   cd Conciliamento_TRT
+   git clone https://github.com/LuisEduardoF/ConciliamentoTRT.git
+   cd ConciliamentoTRT
    ```
-2. **Install dependecies:**
-  Make sure you have Python (3.10) installed, then install the required packages:
+
+2. **Create a python venv:**
+  Make sure you have Python (3.10) installed:
+
+   ```bash
+    python3 -m venv venv
+    source venv/bin/activate
+   ```
+
+4. **Install dependecies:**
+   Then install the required packages:
 
     ```bash
     pip install --upgrade pip
     pip install -r requirements.txt
    ```
-3. **Run the analysis scripts:**
+5. **Run the analysis scripts:**
    ```bash
      python -u classical_analysis/model.py
      python -u llm_analysis/llm_embedding.py
