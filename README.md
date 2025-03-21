@@ -132,8 +132,8 @@ To run the project on your Linux machine, follow these steps:
 5. **Run the analysis scripts:**
    ```bash
      python -u classical_analysis/model.py
-     python -u llm_analysis/llm_embedding.py
-     python -u llm_analysis/llm_classification.py
+     python -u llm_analysis/model_embedding.py
+     python -u llm_analysis/model_classification.py
     ```
    This will execute the methodology and print the outputs directly in your terminal.
 
