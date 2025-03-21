@@ -75,7 +75,7 @@ The project explores two primary approaches for predicting case outcomes:
   - This approach integrates tokenization, dataset conversion, and model training in one streamlined process.
 
 
-![Model Comparation](static/workflow_1.svg)
+![Model Comparation](static/workflow.svg)
 **Workflow diagram comparing the different methodologies**
 
 
