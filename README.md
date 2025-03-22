@@ -102,10 +102,23 @@ The study demonstrates that incorporating LLMs into judicial prediction models s
 - Documentation for the libraries and tools used (e.g., scikit-learn, pandas, numpy, NLTK).
 
 # Git Structure
-```classical_analysis/```: This directory includes scripts and notebooks related to classical statistical analysis techniques applied in the project.
-```data/```: Stores datasets used for training and evaluation. This directory should be populated with the necessary data files before running the analysis scripts.
-```notebooks/```: Jupyter notebooks used for exploratory data analysis, visualizations, and model development. This is the primary workspace for interactive development.
-```llm_analysis/```: Contains analysis related to large language models (LLMs), including model training and evaluation scripts.
+├── .github - Contains the YAML files that define GitHub Actions (e.g., automated tests, CI/CD pipelines).  
+├── classical_analysis - Includes scripts focused on the classical machine learning approach.  
+&nbsp; &nbsp; &nbsp;   ├── data_preprocessing.py  
+&nbsp; &nbsp; &nbsp;   ├── model.py  
+&nbsp; &nbsp; &nbsp;   └── target_encoder.py  
+├── data  
+&nbsp; &nbsp; &nbsp;   ├── window_data  
+&nbsp; &nbsp; &nbsp;   ├── updated_dataset_preprocessed.parquet.gzip  
+&nbsp; &nbsp; &nbsp;   └── updated_dataset.parquet.gzip  
+├── llm_analysis  
+&nbsp; &nbsp; &nbsp;   ├── __pycache__  
+&nbsp; &nbsp; &nbsp;   ├── results  
+&nbsp; &nbsp; &nbsp;   ├── data_preprocessing.py  
+&nbsp; &nbsp; &nbsp;  └── model_embedding.py  
+└── notebooks  
+&nbsp; &nbsp; &nbsp;   ├── EDA.ipynb  
+&nbsp; &nbsp; &nbsp;   └── run.ipynb  
 
 # Running the Project
 
