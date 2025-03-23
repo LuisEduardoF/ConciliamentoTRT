@@ -19,6 +19,7 @@
 - [Results](#results)
 - [Conclusions](#conclusions)
 - [References](#references)
+- [Git Structure](#git-structure)
 - [Running the Project](#running-the-project)
   - [Locally on a Linux Terminal](#locally-on-a-linux-terminal)
   - [Automated Execution with GitHub Actions](#automated-execution-with-github-actions)
@@ -102,23 +103,24 @@ The study demonstrates that incorporating LLMs into judicial prediction models s
 - Documentation for the libraries and tools used (e.g., scikit-learn, pandas, numpy, NLTK).
 
 # Git Structure
-├── .github - Contains the YAML files that define GitHub Actions (e.g., automated tests, CI/CD pipelines).  
-├── classical_analysis - Includes scripts focused on the classical machine learning approach.  
-&nbsp; &nbsp; &nbsp;   ├── data_preprocessing.py  
-&nbsp; &nbsp; &nbsp;   ├── model.py  
-&nbsp; &nbsp; &nbsp;   └── target_encoder.py  
-├── data  
-&nbsp; &nbsp; &nbsp;   ├── window_data  
-&nbsp; &nbsp; &nbsp;   ├── updated_dataset_preprocessed.parquet.gzip  
-&nbsp; &nbsp; &nbsp;   └── updated_dataset.parquet.gzip  
-├── llm_analysis  
-&nbsp; &nbsp; &nbsp;   ├── __pycache__  
-&nbsp; &nbsp; &nbsp;   ├── results  
-&nbsp; &nbsp; &nbsp;   ├── data_preprocessing.py  
-&nbsp; &nbsp; &nbsp;  └── model_embedding.py  
-└── notebooks  
-&nbsp; &nbsp; &nbsp;   ├── EDA.ipynb  
-&nbsp; &nbsp; &nbsp;   └── run.ipynb  
+├── **.github** - Contains the YAML files that define GitHub Actions (e.g., automated tests, CI/CD pipelines).  
+├── **classical_analysis** - Includes scripts focused on the classical machine learning approach.  
+&nbsp; &nbsp; &nbsp;   ├── **data_preprocessing.py** - Processing utility file + Window division  
+&nbsp; &nbsp; &nbsp;   ├── **model.py** - Classic Models definition/application  
+&nbsp; &nbsp; &nbsp;   └── **target_encoder.py** - Target Encoder class  
+├── **data**  
+&nbsp; &nbsp; &nbsp;   ├── **window_data** - Window data, divided by whole window and train and test for each one  
+&nbsp; &nbsp; &nbsp;   ├── **updated_dataset_preprocessed.parquet.gzip** - Preprocessed dataset  
+&nbsp; &nbsp; &nbsp;   └── **updated_dataset.parquet.gzip** - Raw dataset  
+├── **llm_analysis**  
+&nbsp; &nbsp; &nbsp;   ├── **__pycache__**  
+&nbsp; &nbsp; &nbsp;   ├── **results** - Results folder  
+&nbsp; &nbsp; &nbsp;   ├── **data_preprocessing.py** - Processing utility file + Window division   
+&nbsp; &nbsp; &nbsp;   ├── **model_classification.py** - LLM Classification definition/application   
+&nbsp; &nbsp; &nbsp;  └── **model_embedding.py** - LLM Embedding definition/application  
+└──**notebooks**  
+&nbsp; &nbsp; &nbsp;   ├── **EDA.ipynb** - Exploratory Data Analysis notebook  
+&nbsp; &nbsp; &nbsp;   └── **run.ipynb** - Run notebook  
 
 # Running the Project
 
