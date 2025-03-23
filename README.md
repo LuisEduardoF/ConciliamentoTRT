@@ -136,7 +136,7 @@ To run the project on your Linux machine, follow these steps:
    ```
 
 2. **Create a python venv:**
-  Make sure you have Python (3.10) installed:
+  Make sure you have Python (>= 3.10) installed:
 
    ```bash
     python3 -m venv venv
