@@ -150,7 +150,10 @@ To run the project on your Linux machine, follow these steps:
     pip install --upgrade pip
     pip install -r requirements.txt
    ```
-5. **Run the analysis scripts:**
+5. **Getting the data:**  
+    Since the **data contains sensitive labol court judgment information**, **the data is not in this repository**. If you are interested, contact me to make the data available, just create an issue requesting the data with your email and I can forward it if necessary. Contact: ```luisefcamara@gmail.com / +5527999170456 (WhatsApp)```  
+    After that you can create a folder called ```data``` and add the parquet file there.
+6. **Run the analysis scripts:**
    ```bash
      python -u classical_analysis/model.py
      python -u llm_analysis/model_embedding.py
