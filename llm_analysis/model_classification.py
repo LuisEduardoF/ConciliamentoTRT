@@ -78,7 +78,7 @@ if __name__ == '__main__':
     # Each DataFrame must contain the categorical columns and a target column dp.TARGET_COL
     for window_index, window in enumerate(window_df):
         if window_index != 10:
-            continue
+            continue # Only process the 10 windows for now
         
         print(f"\nProcessing Window {window_index+1} (from {window[dp.TIME_COL].min().date()} to {window[dp.TIME_COL].max().date()}):")
         
